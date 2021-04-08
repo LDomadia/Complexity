@@ -125,6 +125,10 @@ function complexity(filePath)
 
 			builders[builder.FunctionName] = builder;
 		}
+		else if (node.type === 'Literal')
+		{
+			fileBuilder.Strings++;
+		}
 
 	});
 
@@ -175,6 +179,7 @@ function parameterCount(node)
 {
 	return node.params.length;
 }
+
 
 // Helper function for allowing parameterized formatting of strings.
 if (!String.prototype.format) {
