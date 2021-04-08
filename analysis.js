@@ -33,7 +33,7 @@ function FunctionBuilder()
 	this.StartLine = 0;
 	this.FunctionName = "";
 	// The number of parameters for functions
-	this.ParameterCount = 0,
+	this.ParameterCount = 0;
 	// Number of if statements/loops + 1
 	this.SimpleCyclomaticComplexity = 0;
 	// The max depth of scopes (nested ifs, loops, etc)
@@ -124,12 +124,21 @@ function complexity(filePath)
 			builder.ParameterCount = parameterCount(node);
 
 			builders[builder.FunctionName] = builder;
+
+			traverseWithParents(node, function (node)
+			{
+				if (isDecision(node))
+				{
+					builder.SimpleCyclomaticComplexity++;
+				}
+			});
+			
 		}
 		else if (node.type === 'Literal')
 		{
 			fileBuilder.Strings++;
 		}
-
+		
 	});
 
 }
@@ -157,8 +166,8 @@ function childrenLength(node)
 // Helper function for checking if a node is a "decision type node"
 function isDecision(node)
 {
-	if( node.type == 'IfStatement' || node.type == 'ForStatement' || node.type == 'WhileStatement' ||
-		 node.type == 'ForInStatement' || node.type == 'DoWhileStatement')
+	if( node.type === 'IfStatement' || node.type === 'ForStatement' || node.type === 'WhileStatement' ||
+		 node.type === 'ForInStatement' || node.type === 'DoWhileStatement')
 	{
 		return true;
 	}
@@ -179,7 +188,6 @@ function parameterCount(node)
 {
 	return node.params.length;
 }
-
 
 // Helper function for allowing parameterized formatting of strings.
 if (!String.prototype.format) {
