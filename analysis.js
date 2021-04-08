@@ -33,13 +33,13 @@ function FunctionBuilder()
 	this.StartLine = 0;
 	this.FunctionName = "";
 	// The number of parameters for functions
-	this.ParameterCount  = 0,
+	this.ParameterCount = 0,
 	// Number of if statements/loops + 1
 	this.SimpleCyclomaticComplexity = 0;
 	// The max depth of scopes (nested ifs, loops, etc)
-	this.MaxNestingDepth    = 0;
+	this.MaxNestingDepth = 0;
 	// The max number of conditions if one decision statement.
-	this.MaxConditions      = 0;
+	this.MaxConditions = 0;
 
 	this.report = function()
 	{
@@ -121,6 +121,7 @@ function complexity(filePath)
 
 			builder.FunctionName = functionName(node);
 			builder.StartLine    = node.loc.start.line;
+			builder.ParameterCount = parameterCount(node);
 
 			builders[builder.FunctionName] = builder;
 		}
@@ -168,6 +169,11 @@ function functionName( node )
 		return node.id.name;
 	}
 	return "anon function @" + node.loc.start.line;
+}
+
+function parameterCount(node)
+{
+	return node.params.length;
 }
 
 // Helper function for allowing parameterized formatting of strings.
