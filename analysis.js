@@ -35,7 +35,7 @@ function FunctionBuilder()
 	// The number of parameters for functions
 	this.ParameterCount = 0;
 	// Number of if statements/loops + 1
-	this.SimpleCyclomaticComplexity = 0;
+	this.SimpleCyclomaticComplexity = 1;
 	// The max depth of scopes (nested ifs, loops, etc)
 	this.MaxNestingDepth = 0;
 	// The max number of conditions if one decision statement.
@@ -130,6 +130,21 @@ function complexity(filePath)
 				if (isDecision(node))
 				{
 					builder.SimpleCyclomaticComplexity++;
+					var count = 0;
+					console.log(builder.FunctionName)
+
+					traverseWithParents(node, function(node)
+					{
+						if(node.type === 'LogicalExpression' && (node.operator === '||' || node.operator === '&&'))
+						{
+							count++;
+							console.log(count);
+							if(builder.MaxConditions < count)
+							{
+								builder.MaxConditions = count;
+							}
+						}
+					});
 				}
 			});
 			
