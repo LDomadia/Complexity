@@ -4,6 +4,7 @@
 (https://travis-ci.org/github/LDomadia/Complexity)
 
 In this lab, you'll be implementing simple algorithms for checking basic properties of code complexity...
+testing
 
 Two design patterns are of importance here:
 * A [Builder pattern](https://en.wikipedia.org/wiki/Builder_pattern), which is used to build up state and then finally emit.
