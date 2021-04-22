@@ -1,6 +1,6 @@
 # Complexity & Travis-CI Lab
 
-[![build status of master](https://travis-ci.org/LDomadia/Complexity.svg?branch=dependabot%2Fnpm_and_yarn%2Flodash-4.17.19)]
+[![build status of master](https://travis-ci.org/LDomadia/Complexity.svg?branch=master)]
 (https://travis-ci.org/github/LDomadia/Complexity)
 
 In this lab, you'll be implementing simple algorithms for checking basic properties of code complexity.
