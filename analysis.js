@@ -131,14 +131,14 @@ function complexity(filePath)
 				{
 					builder.SimpleCyclomaticComplexity++;
 					var count = 0;
-					console.log(builder.FunctionName)
+					//console.log(builder.FunctionName)
 
 					traverseWithParents(node, function(node)
 					{
 						if(node.type === 'LogicalExpression' && (node.operator === '||' || node.operator === '&&'))
 						{
 							count++;
-							console.log(count);
+							//console.log(count);
 							if(builder.MaxConditions < count)
 							{
 								builder.MaxConditions = count;
