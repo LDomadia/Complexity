@@ -33,13 +33,13 @@ function FunctionBuilder()
 	this.StartLine = 0;
 	this.FunctionName = "";
 	// The number of parameters for functions
-	this.ParameterCount  = 0,
+	this.ParameterCount = 0;
 	// Number of if statements/loops + 1
-	this.SimpleCyclomaticComplexity = 0;
+	this.SimpleCyclomaticComplexity = 1;
 	// The max depth of scopes (nested ifs, loops, etc)
-	this.MaxNestingDepth    = 0;
+	this.MaxNestingDepth = 0;
 	// The max number of conditions if one decision statement.
-	this.MaxConditions      = 0;
+	this.MaxConditions = 0;
 
 	this.report = function()
 	{
@@ -121,10 +121,39 @@ function complexity(filePath)
 
 			builder.FunctionName = functionName(node);
 			builder.StartLine    = node.loc.start.line;
+			builder.ParameterCount = parameterCount(node);
 
 			builders[builder.FunctionName] = builder;
-		}
 
+			traverseWithParents(node, function (node)
+			{
+				if (isDecision(node))
+				{
+					builder.SimpleCyclomaticComplexity++;
+					var count = 0;
+					console.log(builder.FunctionName)
+
+					traverseWithParents(node, function(node)
+					{
+						if(node.type === 'LogicalExpression' && (node.operator === '||' || node.operator === '&&'))
+						{
+							count++;
+							console.log(count);
+							if(builder.MaxConditions < count)
+							{
+								builder.MaxConditions = count;
+							}
+						}
+					});
+				}
+			});
+			
+		}
+		else if (node.type === 'Literal')
+		{
+			fileBuilder.Strings++;
+		}
+		
 	});
 
 }
@@ -152,8 +181,8 @@ function childrenLength(node)
 // Helper function for checking if a node is a "decision type node"
 function isDecision(node)
 {
-	if( node.type == 'IfStatement' || node.type == 'ForStatement' || node.type == 'WhileStatement' ||
-		 node.type == 'ForInStatement' || node.type == 'DoWhileStatement')
+	if( node.type === 'IfStatement' || node.type === 'ForStatement' || node.type === 'WhileStatement' ||
+		 node.type === 'ForInStatement' || node.type === 'DoWhileStatement')
 	{
 		return true;
 	}
@@ -168,6 +197,11 @@ function functionName( node )
 		return node.id.name;
 	}
 	return "anon function @" + node.loc.start.line;
+}
+
+function parameterCount(node)
+{
+	return node.params.length;
 }
 
 // Helper function for allowing parameterized formatting of strings.
